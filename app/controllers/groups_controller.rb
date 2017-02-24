@@ -1,8 +1,12 @@
 class GroupsController < ApplicationController
 before_action :find_group, only:[:show,:edit, :update,:destroy]
+before_action :authenticate_user!, only:[:new,:create, :edit, :update, :destroy]
 
   def index
     @groups=Group.all
+
+
+
   end
 
   def new
@@ -14,6 +18,7 @@ def create
   @group=Group.new(group_params)
   if @group.save
     redirect_to groups_path
+    flash[:notice]="Create success"
   else
     render :new
   end
@@ -28,6 +33,7 @@ end
 def update
   if @group.update(group_params)
     redirect_to groups_path
+    flash[:notice]="Update success"
   else
   render :edit
 end
@@ -36,6 +42,7 @@ end
 def destroy
   @group.destroy
   redirect_to groups_path
+  flash[:warning]="delete success"
 end
 
 private
